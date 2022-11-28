@@ -74,9 +74,12 @@ def time_str(t):
         return '{:.1f}m'.format(t / 60)
     return '{:.1f}s'.format(t)
 
+def robust_proto()
 
 def compute_logits(feat, proto, metric='dot', temp=1.0):
     assert feat.dim() == proto.dim()
+    #checking internal dimension
+    print(proto.size())
 
     if feat.dim() == 2:
         if metric == 'dot':
