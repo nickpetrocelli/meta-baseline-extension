@@ -74,7 +74,10 @@ def time_str(t):
         return '{:.1f}m'.format(t / 60)
     return '{:.1f}s'.format(t)
 
-def robust_proto()
+def robust_proto(proto, epsilon=0.2):
+    # robust mean estimation 
+    # assumes using l2 norm/sqr distance
+    raise ValueError("Needs implementation")
 
 def compute_logits(feat, proto, metric='dot', temp=1.0):
     assert feat.dim() == proto.dim()
