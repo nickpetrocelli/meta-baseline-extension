@@ -93,7 +93,7 @@ def robust_proto(x_shot, epsilon=0.2):
     protos = []
     for c in range(x_shot_medians.shape[0]):
         # should be able to derive from shape
-        N = ?
+        N = 0 # TODO
 
         v = x_shot_medians[c]
         # for O(log d) iters
