@@ -18,6 +18,11 @@ from datasets.samplers import CategoriesSampler
 
 
 def main(config):
+    # release memory
+    gc.collect()
+    torch.cuda.empty_cache()
+
+    
     svname = args.name
     if svname is None:
         svname = 'classifier_{}'.format(config['train_dataset'])

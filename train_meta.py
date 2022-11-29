@@ -15,9 +15,14 @@ import models
 import utils
 import utils.few_shot as fs
 from datasets.samplers import CategoriesSampler
+import gc
 
 
 def main(config):
+    # release memory
+    gc.collect()
+    torch.cuda.empty_cache()
+
     svname = args.name
     if svname is None:
         svname = 'meta_{}-{}shot'.format(
