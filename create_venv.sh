@@ -4,7 +4,7 @@
 export DATA_DIR=/home/npetroce/data/
 export PYTHONPATH=$PYTHONPATH:$PWD
 python3.9 -m pip install virtualenv
-python3.9 -m virtualenv models_env
+python3.9 -m virtualenv meta_env
 source meta_env/bin/activate
 pip install -U pip
 pip install --default-timeout=1000 -r  requirements.txt
