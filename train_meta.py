@@ -22,7 +22,7 @@ def main(config):
     if svname is None:
         svname = 'meta_{}-{}shot'.format(
                 config['train_dataset'], config['n_shot'])
-        svname += '_' + config['model'] + '-' + config['model_args']['encoder']
+        svname += '_' + config['model'] + '-' + config['model_args']['encoder'] + '-' + config['model_args']['method']
     if args.tag is not None:
         svname += '_' + args.tag
     save_path = os.path.join('./save', svname)
