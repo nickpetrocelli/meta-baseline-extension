@@ -8,6 +8,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.optim import SGD, Adam
 from torch.optim.lr_scheduler import MultiStepLR
+import cvxpy as cp
+import math
 
 from . import few_shot
 
@@ -74,15 +76,37 @@ def time_str(t):
         return '{:.1f}m'.format(t / 60)
     return '{:.1f}s'.format(t)
 
-def robust_proto(proto, epsilon=0.2):
+def robust_proto(x_shot, epsilon=0.2):
     # robust mean estimation 
     # assumes using l2 norm/sqr distance
     raise ValueError("Needs implementation")
 
+    # convert x_shot to numpy for use with cvxpy
+    x_shot_arr = x_shot.detach().cpu().numpy()
+    # get medians
+    x_shot_medians = torch.median(x_shot, dim=-2).values.detach().cpu().numpy
+    print(f'medians shape: {x_shot_medians.shape}')
+
+    d = x_shot.size()[-1] # this should always be true?
+
+    # for each way
+    protos = []
+    for c in range(x_shot_medians.shape[0]):
+        # should be able to derive from shape
+        N = ?
+
+        v = x_shot_medians[c]
+        # for O(log d) iters
+        for _ in range(math.ceil(math.log(x_shot_medians.shape[1]))):
+            assert False, "broken"
+
+
+    
+
 def compute_logits(feat, proto, metric='dot', temp=1.0):
     assert feat.dim() == proto.dim()
     #checking internal dimension
-    print(proto.size())
+    #print(f'proto size: {proto.size()}')
 
     if feat.dim() == 2:
         if metric == 'dot':

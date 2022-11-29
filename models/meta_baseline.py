@@ -39,9 +39,9 @@ class MetaBaseline(nn.Module):
             x_query = F.normalize(x_query, dim=-1)
             metric = 'dot'
         elif self.method == 'sqr':
-            print(f'before mean shape: {x_shot.shape()}')
+            print(f'before mean shape: {x_shot.size()}')
             x_shot = x_shot.mean(dim=-2)
-            print(f'after mean shape: {x_shot.shape()}')
+            print(f'after mean shape: {x_shot.size()}')
             metric = 'sqr'
 
         logits = utils.compute_logits(
