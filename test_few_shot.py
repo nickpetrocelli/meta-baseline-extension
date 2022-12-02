@@ -80,7 +80,8 @@ def main(config, args):
                 corrupt_idxs = random.sample(range(n_shot), math.floor(args.epsilon * n_shot))
                 for idx in corrupt_idxs:
                     # generate a random spherical gaussian noise tensor to add to shot tensor
-                    corruption_tensor = torch.normal(mean=0, std=torch.full(x_shot[idx].size(), args.std))
+                    corruption_tensor = torch.normal(mean=0, 
+                        std=torch.full(size=x_shot[idx].size(), fill_value=args.std, device=torch.device('cuda:0')))
                     x_shot[idx] = x_shot[idx] + corruption_tensor
 
 

@@ -4,5 +4,5 @@ pyyaml
 tqdm
 pillow
 torchvision
-sklearn
+scikit-learn
 cvxpy
