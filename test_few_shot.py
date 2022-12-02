@@ -77,16 +77,23 @@ def main(config, args):
 
             if args.epsilon != 0:
                 # perform epsilon corruption
-                true_n_shot = x_shot.size()[0] # correct an off-by-one
-                assert true_n_shot == 1, f"true_n_shot is {true_n_shot}, shape is {x_shot.size()}"
-                ep_frac = math.floor(args.epsilon * true_n_shot)
+                
+                
+                ep_frac = math.floor(args.epsilon * n_shot)
                 assert ep_frac != 0
-                corrupt_idxs = random.sample(range(n_shot), math.floor(args.epsilon * n_shot))
-                for idx in corrupt_idxs:
-                    # generate a random spherical gaussian noise tensor to add to shot tensor
-                    corruption_tensor = torch.normal(mean=0, 
-                        std=torch.full(size=x_shot[idx].size(), fill_value=args.std, device=torch.device('cuda:0')))
-                    x_shot[idx] = x_shot[idx] + corruption_tensor
+
+                orig_size = x_shot.size()
+
+                for episode in range(ep_per_batch):
+                    for way in range(n_way):
+                        corrupt_idxs = random.sample(range(n_shot), ep_frac)
+                        for idx in corrupt_idxs:
+                            # generate a random spherical gaussian noise tensor to add to shot tensor
+                            corruption_tensor = torch.normal(mean=0, 
+                                std=torch.full(size=x_shot[episode][way][idx].size(), fill_value=args.std, device=torch.device('cuda:0')))
+                            x_shot[episode][way][idx] = x_shot[episode][way][idx] + corruption_tensor
+
+                assert orig_size == x_shot.size(), f'original size: {orig_size}, new size: {x_shot.size()}'
 
 
             with torch.no_grad():
