@@ -78,9 +78,10 @@ def main(config, args):
             if args.epsilon != 0:
                 # perform epsilon corruption
                 true_n_shot = x_shot.size()[0] # correct an off-by-one
+                assert true_n_shot == 5
                 ep_frac = math.floor(args.epsilon * true_n_shot)
                 assert ep_frac != 0
-                corrupt_idxs = random.sample(range(true_n_shot), ep_frac)
+                corrupt_idxs = random.sample(range(n_shot), math.floor(args.epsilon * n_shot))
                 for idx in corrupt_idxs:
                     # generate a random spherical gaussian noise tensor to add to shot tensor
                     corruption_tensor = torch.normal(mean=0, 
