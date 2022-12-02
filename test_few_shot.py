@@ -15,6 +15,8 @@ import models
 import utils
 import utils.few_shot as fs
 from datasets.samplers import CategoriesSampler
+import random
+import math
 
 
 def mean_confidence_interval(data, confidence=0.95):
@@ -25,7 +27,7 @@ def mean_confidence_interval(data, confidence=0.95):
     return h
 
 
-def main(config):
+def main(config, args):
     # dataset
     dataset = datasets.make(config['dataset'], **config['dataset_args'])
     utils.log('dataset: {} (x{}), {}'.format(
@@ -66,11 +68,21 @@ def main(config):
     test_epochs = args.test_epochs
     np.random.seed(0)
     va_lst = []
+    print("epoch|acc|conf_int|loss")
     for epoch in range(1, test_epochs + 1):
         for data, _ in tqdm(loader, leave=False):
             x_shot, x_query = fs.split_shot_query(
                     data.cuda(), n_way, n_shot, n_query,
                     ep_per_batch=ep_per_batch)
+
+            if args.epsilon != 0:
+                # perform epsilon corruption
+                corrupt_idxs = random.sample(range(n_shot), math.floor(args.epsilon * n_shot))
+                for idx in corrupt_idxs:
+                    # generate a random spherical gaussian noise tensor to add to shot tensor
+                    corruption_tensor = torch.normal(mean=0, std=torch.full(x_shot[idx].size(), args.std))
+                    x_shot[idx] = x_shot[idx] + corruption_tensor
+
 
             with torch.no_grad():
                 if not args.sauc:
@@ -102,10 +114,10 @@ def main(config):
                         aves['va'].add(acc, len(data))
                         va_lst.append(acc)
 
-        print('test epoch {}: acc={:.2f} +- {:.2f} (%), loss={:.4f} (@{})'.format(
-                epoch, aves['va'].item() * 100,
-                mean_confidence_interval(va_lst) * 100,
-                aves['vl'].item(), _[-1]))
+        print('{}|{:.4f}|{:.4f}|{:.4f}'.format(
+                epoch, aves['va'].item(),
+                mean_confidence_interval(va_lst),
+                aves['vl'].item()))
 
 
 if __name__ == '__main__':
@@ -115,6 +127,8 @@ if __name__ == '__main__':
     parser.add_argument('--test-epochs', type=int, default=10)
     parser.add_argument('--sauc', action='store_true')
     parser.add_argument('--gpu', default='0')
+    parser.add_argument('--epsilon', type=float, default=0.0)
+    parser.add_argument('--std', type=float, default=20.0)
     args = parser.parse_args()
 
     config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)
@@ -122,5 +136,5 @@ if __name__ == '__main__':
         config['_parallel'] = True
 
     utils.set_gpu(args.gpu)
-    main(config)
+    main(config, args)
 

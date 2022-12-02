@@ -1,0 +1,6 @@
+dataset: tiered-imagenet
+dataset_args: {split: test}
+
+load: ./save/meta_tiered-imagenet-5shot_meta-baseline-resnet12-cos/epoch-last.pth
+
+# Replace load with load_encoder for loading the encoder only (e.g. for testing Classifier-Baseline)
