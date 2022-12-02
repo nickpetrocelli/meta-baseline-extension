@@ -78,7 +78,7 @@ def main(config, args):
             if args.epsilon != 0:
                 # perform epsilon corruption
                 true_n_shot = x_shot.size()[0] # correct an off-by-one
-                assert true_n_shot == 1
+                assert true_n_shot == 1, f"true_n_shot is {true_n_shot}, shape is {x_shot.size()}"
                 ep_frac = math.floor(args.epsilon * true_n_shot)
                 assert ep_frac != 0
                 corrupt_idxs = random.sample(range(n_shot), math.floor(args.epsilon * n_shot))
