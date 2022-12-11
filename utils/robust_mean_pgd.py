@@ -31,7 +31,8 @@ def robust_mean_pgd(X, eps):
         Sigma_w_fun = lambda v:  X.T @ (w * (X @ v)) - Xw @ Xw.T @ v
         # [u, lambda1] = eigs(Sigma_w_fun, d, 1)
         # https://stackoverflow.com/questions/51247998/numpy-equivalents-of-eig-and-eigs-functions-of-matlab
-        lambda1, u = sla.eigs(Sigma_w_fun, 1, d)
+        Sigma_w_op = sla.LinearOperator((d, d), matvec=Sigma_w_fun)
+        lambda1, u = sla.eigs(Sigma_w_op, 1)
 
 
         # Compute the gradient of spectral norm (assuming unique top eigenvalue)
@@ -47,7 +48,8 @@ def robust_mean_pgd(X, eps):
         #   If objective function decreases, take larger steps.
         #   If objective function increases, take smaller steps.
         Sigma_w_fun = lambda v: X.T @ (w * (X @ v)) - Xw @ Xw.T @ v
-        new_lambda1, _ = sla.eigs(Sigma_w_fun, 1, d)
+        Sigma_w_op = sla.LinearOperator((d, d), matvec=Sigma_w_fun)
+        new_lambda1, _ = sla.eigs(Sigma_w_op, 1)
         #[~, new_lambda1] = eigs(Sigma_w_fun, d, 1);
         if (new_lambda1 < lambda1):
             stepSz = stepSz * 2
