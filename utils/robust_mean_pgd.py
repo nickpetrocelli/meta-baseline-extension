@@ -22,7 +22,7 @@ def robust_mean_pgd(X, eps):
     
     stepSz = 1.0 / N
     nItr = 10
-    w = ones(N, 1) / N
+    w = np.ones((N, 1)) / N
     #for itr = 1:nItr
     for itr in range(1, nItr):
         # Sigma_w = X' * diag(w) * X - X' * w * w' * X;
