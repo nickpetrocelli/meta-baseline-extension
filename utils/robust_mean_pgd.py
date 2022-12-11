@@ -32,9 +32,9 @@ def robust_mean_pgd(X, eps):
         # [u, lambda1] = eigs(Sigma_w_fun, d, 1)
         # https://stackoverflow.com/questions/51247998/numpy-equivalents-of-eig-and-eigs-functions-of-matlab
         Sigma_w_op = sla.LinearOperator((d, d), matvec=Sigma_w_fun)
-        lambda1, u = sla.eigs(Sigma_w_op, 1)
-        print(lambda1)
-        print(u)
+        w, v = sla.eigs(Sigma_w_op, 1)
+        lambda1 = w[0]
+        u = v[:, 0]
 
 
         # Compute the gradient of spectral norm (assuming unique top eigenvalue)
