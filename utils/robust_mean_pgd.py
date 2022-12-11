@@ -40,6 +40,8 @@ def robust_mean_pgd(X, eps):
         # Compute the gradient of spectral norm (assuming unique top eigenvalue)
         # nabla_f_w = (X * u) .* (X * u) - (w' * X * u) * X * u;
         Xu = X @ u;
+        print(np.shape(Xu))
+        print(np.shape(w.T))
         nabla_f_w = Xu * Xu - 2 @ (w.T @ Xu) @ Xu;
         old_w = w;
         w = w - stepSz @ nabla_f_w / np.linalg.norm(nabla_f_w, ord=2);
