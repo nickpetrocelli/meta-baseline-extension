@@ -11,7 +11,7 @@ from torch.optim.lr_scheduler import MultiStepLR
 import cvxpy as cp
 import math
 
-from . import few_shot
+from . import few_shot, robust_mean_pgd
 
 
 _log_path = None
@@ -76,29 +76,31 @@ def time_str(t):
         return '{:.1f}m'.format(t / 60)
     return '{:.1f}s'.format(t)
 
-def robust_proto(x_shot, epsilon=0.2):
-    # robust mean estimation 
+def robust_proto_pgd(x_shot, epsilon=0.2):
+    # robust mean estimation using projected gradient descent
     # assumes using l2 norm/sqr distance
-    raise ValueError("Needs implementation")
+    print(f"x shot size: {x_shot.size()}")
 
-    # convert x_shot to numpy for use with cvxpy
+    # convert x_shot to numpy 
     x_shot_arr = x_shot.detach().cpu().numpy()
+
+    raise ValueError("Needs implementation")
     # get medians
-    x_shot_medians = torch.median(x_shot, dim=-2).values.detach().cpu().numpy
-    print(f'medians shape: {x_shot_medians.shape}')
+    # x_shot_medians = torch.median(x_shot, dim=-2).values.detach().cpu().numpy
+    # print(f'medians shape: {x_shot_medians.shape}')
 
-    d = x_shot.size()[-1] # this should always be true?
+    # d = x_shot.size()[-1] # this should always be true?
 
-    # for each way
-    protos = []
-    for c in range(x_shot_medians.shape[0]):
-        # should be able to derive from shape
-        N = 0 # TODO
+    # # for each way
+    # protos = []
+    # for c in range(x_shot_medians.shape[0]):
+    #     # should be able to derive from shape
+    #     N = 0 # TODO
 
-        v = x_shot_medians[c]
-        # for O(log d) iters
-        for _ in range(math.ceil(math.log(x_shot_medians.shape[1]))):
-            assert False, "broken"
+    #     v = x_shot_medians[c]
+    #     # for O(log d) iters
+    #     for _ in range(math.ceil(math.log(x_shot_medians.shape[1]))):
+    #         assert False, "broken"
 
 
     

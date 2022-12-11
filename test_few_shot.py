@@ -58,6 +58,10 @@ def main(config, args):
     if config.get('_parallel'):
         model = nn.DataParallel(model)
 
+    if args.use_pgd:
+        assert model.method == 'sqr'
+        model.method = 'sqr_pgd'
+
     model.eval()
     utils.log('num params: {}'.format(utils.compute_n_params(model)))
 
@@ -68,7 +72,7 @@ def main(config, args):
     test_epochs = args.test_epochs
     np.random.seed(0)
     va_lst = []
-    print("epoch|acc|conf_int|loss")
+    print("epoch,acc,conf_int,loss")
     for epoch in range(1, test_epochs + 1):
         for data, _ in tqdm(loader, leave=False):
             x_shot, x_query = fs.split_shot_query(
@@ -126,7 +130,7 @@ def main(config, args):
                         aves['va'].add(acc, len(data))
                         va_lst.append(acc)
 
-        print('{}|{:.4f}|{:.4f}|{:.4f}'.format(
+        print('{},{:.4f},{:.4f},{:.4f}'.format(
                 epoch, aves['va'].item(),
                 mean_confidence_interval(va_lst),
                 aves['vl'].item()))
@@ -141,6 +145,7 @@ if __name__ == '__main__':
     parser.add_argument('--gpu', default='0')
     parser.add_argument('--epsilon', type=float, default=0.0)
     parser.add_argument('--std', type=float, default=20.0)
+    parser.add_argument('--use-pgd', action='store_true')
     args = parser.parse_args()
 
     config = yaml.load(open(args.config, 'r'), Loader=yaml.FullLoader)

@@ -43,6 +43,8 @@ class MetaBaseline(nn.Module):
             x_shot = x_shot.mean(dim=-2)
             #print(f'after mean shape: {x_shot.size()}')
             metric = 'sqr'
+        elif self.method == 'sqr_pgd':
+            x_shot = utils.robust_mean_pgd.robust_mean_pgd(x_shot)
 
         logits = utils.compute_logits(
                 x_query, x_shot, metric=metric, temp=self.temp)
