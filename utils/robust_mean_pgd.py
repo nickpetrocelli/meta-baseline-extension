@@ -41,11 +41,11 @@ def robust_mean_pgd(X, eps):
         # nabla_f_w = (X * u) .* (X * u) - (w' * X * u) * X * u;
         Xu = X @ u;
         # I HATE NUMPY I HATE NUMPY
-        Xu = np.reshape(Xu, (np.shape(Xu)[0], 1))
+        #Xu = np.reshape(Xu, (np.shape(Xu)[0], 1))
         print(np.shape(Xu))
         print(np.shape(w.T))
 
-        nabla_f_w = Xu * Xu - 2 @ (w.T @ Xu) @ Xu;
+        nabla_f_w = Xu * Xu - 2 * (w.T @ Xu) @ Xu;
         old_w = w;
         w = w - stepSz @ nabla_f_w / np.linalg.norm(nabla_f_w, ord=2);
         # Projecting w onto the feasible region
