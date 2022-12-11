@@ -41,7 +41,7 @@ def robust_mean_pgd(X, eps):
         old_w = w;
         w = w - stepSz @ nabla_f_w / np.linalg.norm(nabla_f_w, ord=2);
         # Projecting w onto the feasible region
-        w = project_onto_capped_simplex_simple(w, 1 / (N - epsN));
+        w = project_onto_capped_simplex_simple(w, 1 / (N - epsN))
         
         # Use adaptive step size.
         #   If objective function decreases, take larger steps.
@@ -59,7 +59,7 @@ def robust_mean_pgd(X, eps):
     return X.getH() @ w
 
 
-def project_onto_capped_simplex_simple(w, cap)
+def project_onto_capped_simplex_simple(w, cap):
     # The projection of w onto the capped simplex is  min(max(w - t, 0), cap)  for some scalar t
     tL = np.amin(w) - 1;
     tR = np.amax(w);
