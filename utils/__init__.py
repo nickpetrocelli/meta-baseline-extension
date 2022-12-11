@@ -79,12 +79,24 @@ def time_str(t):
 def robust_proto_pgd(x_shot, epsilon=0.2):
     # robust mean estimation using projected gradient descent
     # assumes using l2 norm/sqr distance
-    print(f"x shot size: {x_shot.size()}")
+    # x_shot: [num_episodes x n_way x n_shot x embedding_dim]
+    #print(f"x shot size: {x_shot.size()}")
 
     # convert x_shot to numpy 
     x_shot_arr = x_shot.detach().cpu().numpy()
 
-    raise ValueError("Needs implementation")
+    x_shot_arr_shape = np.shape(x_shot_arr)
+    results = []
+    for ep in range(x_shot_arr_shape[0]):
+        ep_results = []
+        for way in range(x_shot_arr_shape[1]):
+            ep_results.append(robust_mean_pgd(x_shot_arr[ep][way], epsilon))
+        results.append(ep_results)
+
+    # TODO parallel?
+    return torch.tensor(results)
+
+
     # get medians
     # x_shot_medians = torch.median(x_shot, dim=-2).values.detach().cpu().numpy
     # print(f'medians shape: {x_shot_medians.shape}')
