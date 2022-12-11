@@ -63,7 +63,7 @@ def project_onto_capped_simplex_simple(w, cap):
     # The projection of w onto the capped simplex is  min(max(w - t, 0), cap)  for some scalar t
     tL = np.amin(w) - 1;
     tR = np.amax(w);
-    for bSearch in range(1,50)
+    for bSearch in range(1,50):
         t = (tL + tR) / 2;
         if (np.sum(np.amin(np.amax(w - t, 0), cap)) < 1)
             tR = t;
