@@ -27,8 +27,8 @@ def robust_mean_pgd(X, eps):
     for itr in range(1, nItr):
         # Sigma_w = X' * diag(w) * X - X' * w * w' * X;
         # [u, lambda] = eigs(Sigma_w, 1);
-        Xw = X.getH() @ w
-        Sigma_w_fun = lambda v:  X.getH() @ (w * (X @ v)) - Xw @ Xw.getH() @ v
+        Xw = X.T @ w
+        Sigma_w_fun = lambda v:  X.T @ (w * (X @ v)) - Xw @ Xw.T @ v
         # [u, lambda1] = eigs(Sigma_w_fun, d, 1)
         # https://stackoverflow.com/questions/51247998/numpy-equivalents-of-eig-and-eigs-functions-of-matlab
         lambda1, u = sla.eigs(Sigma_w_fun, 1, d)
@@ -37,7 +37,7 @@ def robust_mean_pgd(X, eps):
         # Compute the gradient of spectral norm (assuming unique top eigenvalue)
         # nabla_f_w = (X * u) .* (X * u) - (w' * X * u) * X * u;
         Xu = X @ u;
-        nabla_f_w = Xu * Xu - 2 @ (w.getH() @ Xu) @ Xu;
+        nabla_f_w = Xu * Xu - 2 @ (w.T @ Xu) @ Xu;
         old_w = w;
         w = w - stepSz @ nabla_f_w / np.linalg.norm(nabla_f_w, ord=2);
         # Projecting w onto the feasible region
@@ -46,7 +46,7 @@ def robust_mean_pgd(X, eps):
         # Use adaptive step size.
         #   If objective function decreases, take larger steps.
         #   If objective function increases, take smaller steps.
-        Sigma_w_fun = lambda v: X.getH() @ (w * (X @ v)) - Xw @ Xw.getH() @ v
+        Sigma_w_fun = lambda v: X.T @ (w * (X @ v)) - Xw @ Xw.T @ v
         new_lambda1, _ = sla.eigs(Sigma_w_fun, 1, d)
         #[~, new_lambda1] = eigs(Sigma_w_fun, d, 1);
         if (new_lambda1 < lambda1):
@@ -56,7 +56,7 @@ def robust_mean_pgd(X, eps):
             w = old_w
         
     
-    return X.getH() @ w
+    return X.T @ w
 
 
 def project_onto_capped_simplex_simple(w, cap):
