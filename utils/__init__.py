@@ -90,7 +90,7 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
     for ep in range(x_shot_arr_shape[0]):
         ep_results = []
         for way in range(x_shot_arr_shape[1]):
-            ep_results.append(robust_mean_pgd(x_shot_arr[ep][way], epsilon))
+            ep_results.append(robust_mean_pgd.robust_mean_pgd(x_shot_arr[ep][way], epsilon))
         results.append(ep_results)
 
     # TODO parallel?
