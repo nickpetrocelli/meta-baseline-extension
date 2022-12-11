@@ -28,7 +28,7 @@ def robust_mean_pgd(X, eps):
         # Sigma_w = X' * diag(w) * X - X' * w * w' * X;
         # [u, lambda] = eigs(Sigma_w, 1);
         Xw = X.T @ w
-        Sigma_w_fun = lambda v:  X.T @ (w * (X @ v)) - Xw @ Xw.T @ v
+        Sigma_w_fun = lambda v:  np.matmul(X.T, (w * np.matmul(X, v))) - np.matmul(np.matmul(Xw, Xw.T), v)
         # [u, lambda1] = eigs(Sigma_w_fun, d, 1)
         # https://stackoverflow.com/questions/51247998/numpy-equivalents-of-eig-and-eigs-functions-of-matlab
         Sigma_w_op = sla.LinearOperator((d, d), matvec=Sigma_w_fun)
