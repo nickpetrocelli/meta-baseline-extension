@@ -41,7 +41,7 @@ def robust_mean_pgd(X, eps):
         # nabla_f_w = (X * u) .* (X * u) - (w' * X * u) * X * u;
         Xu = X @ u;
         # I HATE NUMPY I HATE NUMPY
-        Xu = np.reshape(Xu, (1, np.shape(Xu)[0]))
+        Xu = np.reshape(Xu, (np.shape(Xu)[0], 1))
         print(np.shape(Xu))
         print(np.shape(w.T))
 
