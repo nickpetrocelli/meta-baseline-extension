@@ -45,6 +45,7 @@ class MetaBaseline(nn.Module):
             metric = 'sqr'
         elif self.method == 'sqr_pgd':
             x_shot = utils.robust_proto_pgd(x_shot)
+            metric='sqr'
 
         logits = utils.compute_logits(
                 x_query, x_shot, metric=metric, temp=self.temp)
