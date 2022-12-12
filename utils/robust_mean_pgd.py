@@ -75,11 +75,11 @@ def project_onto_capped_simplex_simple(w, cap):
     tR = np.amax(w)
     for bSearch in range(1,51):
         t = (tL + tR) / 2
-        if (np.sum(np.amin(np.amax(w - t, 0), cap)) < 1):
+        if (np.sum(np.minimum(np.maximum(w - t, 0), cap)) < 1):
             tR = t
         else:
             tL = t
         
     
-    return np.amin(np.amax(w - t, 0), cap)
+    return np.minimum(np.maximum(w - t, 0), cap)
 
