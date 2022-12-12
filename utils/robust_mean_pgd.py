@@ -66,7 +66,7 @@ def robust_mean_pgd(X, eps):
             w = old_w
         
     
-    return np.reshape(X.T @ w, (d,))
+    return np.real_if_close(np.reshape(X.T @ w, (d,)))
 
 
 def project_onto_capped_simplex_simple(w, cap):
