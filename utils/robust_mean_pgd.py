@@ -42,9 +42,9 @@ def robust_mean_pgd(X, eps):
         Xu = X @ u;
         # I HATE NUMPY I HATE NUMPY
         Xu = np.reshape(Xu, (np.shape(Xu)[0], 1))
-        print(np.shape(Xu))
-        print(np.shape(w.T))
-        print(np.shape(w.T @ Xu))
+        # print(np.shape(Xu))
+        # print(np.shape(w.T))
+        # print(np.shape(w.T @ Xu))
 
         nabla_f_w = Xu * Xu - 2 * (w.T @ Xu) * Xu;
         old_w = w;
@@ -66,7 +66,7 @@ def robust_mean_pgd(X, eps):
             w = old_w
         
     
-    return X.T @ w
+    return np.reshape(X.T @ w, (d,))
 
 
 def project_onto_capped_simplex_simple(w, cap):

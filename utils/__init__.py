@@ -97,6 +97,7 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
     results_arr = np.array(results)
     results_ten = torch.tensor(results)
     print(f"results_ten size: {results_ten.size()}")
+    raise ValueError("testing, testing")
     return results_ten
 
 
