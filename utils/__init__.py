@@ -93,9 +93,11 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
             ep_results.append(robust_mean_pgd.robust_mean_pgd(x_shot_arr[ep][way], epsilon))
         results.append(ep_results)
 
-    # TODO parallel?
     results_arr = np.array(results)
-    results_ten = torch.tensor(results)
+    # TODO parallel?
+    # currently assuming one gpu
+    cuda0 = torch.device('cuda:0')
+    results_ten = torch.tensor(results, device=cuda0)
     #print(f"results_ten size: {results_ten.size()}")
     return results_ten
 
