@@ -65,8 +65,8 @@ def robust_mean_pgd(X, eps):
             stepSz = stepSz / 4
             w = old_w
         
-    
-    return np.real_if_close(np.reshape(X.T @ w, (d,)))
+    # TODO why is this complex?
+    return np.real(np.reshape(X.T @ w, (d,)))
 
 
 def project_onto_capped_simplex_simple(w, cap):
