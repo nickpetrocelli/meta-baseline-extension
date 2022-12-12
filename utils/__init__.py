@@ -80,7 +80,7 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
     # robust mean estimation using projected gradient descent
     # assumes using l2 norm/sqr distance
     # x_shot: [num_episodes x n_way x n_shot x embedding_dim]
-    #print(f"x shot size: {x_shot.size()}")
+    print(f"x shot size: {x_shot.size()}")
 
     # convert x_shot to numpy 
     x_shot_arr = x_shot.detach().cpu().numpy()
@@ -94,7 +94,10 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
         results.append(ep_results)
 
     # TODO parallel?
-    return torch.tensor(results)
+    results_arr = np.array(results)
+    results_ten = torch.tensor(results)
+    print(f"results_ten size: {results_ten.size()}")
+    return results_ten
 
 
     # get medians
