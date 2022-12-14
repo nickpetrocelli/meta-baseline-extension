@@ -154,6 +154,6 @@ if __name__ == '__main__':
     if len(args.gpu.split(',')) > 1:
         config['_parallel'] = True
 
-    #utils.set_gpu(args.gpu)
+    utils.set_gpu(args.gpu)
     main(config, args)
 
