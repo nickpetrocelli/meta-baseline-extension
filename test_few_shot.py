@@ -73,6 +73,7 @@ def main(config, args):
     np.random.seed(0)
     va_lst = []
     print("epoch,acc,conf_int,loss")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     for epoch in range(1, test_epochs + 1):
         for data, _ in tqdm(loader, leave=False):
             x_shot, x_query = fs.split_shot_query(
@@ -94,7 +95,7 @@ def main(config, args):
                         for idx in corrupt_idxs:
                             # generate a random spherical gaussian noise tensor to add to shot tensor
                             corruption_tensor = torch.normal(mean=0, 
-                                std=torch.full(size=x_shot[episode][way][idx].size(), fill_value=args.std, device=torch.device('cuda:0')))
+                                std=torch.full(size=x_shot[episode][way][idx].size(), fill_value=args.std, device=device))
                             x_shot[episode][way][idx] = x_shot[episode][way][idx] + corruption_tensor
 
                 assert orig_size == x_shot.size(), f'original size: {orig_size}, new size: {x_shot.size()}'
@@ -152,6 +153,6 @@ if __name__ == '__main__':
     if len(args.gpu.split(',')) > 1:
         config['_parallel'] = True
 
-    utils.set_gpu(args.gpu)
+    #utils.set_gpu(args.gpu)
     main(config, args)
 

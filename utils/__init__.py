@@ -96,8 +96,8 @@ def robust_proto_pgd(x_shot, epsilon=0.2):
     results_arr = np.array(results)
     # TODO parallel?
     # currently assuming one gpu
-    cuda0 = torch.device('cuda:0')
-    results_ten = torch.tensor(results, device=cuda0)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    results_ten = torch.tensor(results, device=device)
     #print(f"results_ten size: {results_ten.size()}")
     return results_ten
 
