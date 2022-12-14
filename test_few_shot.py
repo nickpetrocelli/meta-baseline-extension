@@ -45,11 +45,13 @@ def main(config, args):
     loader = DataLoader(dataset, batch_sampler=batch_sampler,
                         num_workers=8, pin_memory=True)
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
     # model
     if config.get('load') is None:
         model = models.make('meta-baseline', encoder=None)
     else:
-        model = models.load(torch.load(config['load']))
+        model = models.load(torch.load(config['load'], map_location=device))
 
     if config.get('load_encoder') is not None:
         encoder = models.load(torch.load(config['load_encoder'])).encoder
@@ -73,7 +75,6 @@ def main(config, args):
     np.random.seed(0)
     va_lst = []
     print("epoch,acc,conf_int,loss")
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     for epoch in range(1, test_epochs + 1):
         for data, _ in tqdm(loader, leave=False):
             x_shot, x_query = fs.split_shot_query(
