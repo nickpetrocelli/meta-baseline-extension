@@ -69,12 +69,14 @@ def main(config, args):
                     post_corrupt = x_shot[episode][way][idx] + corruption_tensor
                     post_enc = encoder(post_corrupt[None, :])
 
-                    plt.imsave(f'imgs/{idx}_pre_corrupt',pre_corrupt.type(dtype=torch.int).permute(1, 2, 0)  )
-                    plt.imsave(f'imgs/{idx}_post_corrupt',post_corrupt.type(dtype=torch.int).permute(1, 2, 0)  )
                     print("cosine difference: ", {torch.bmm(F.normalize(pre_corrupt, dim=-1),
                                F.normalize(post_corrupt, dim=-1).permute(0, 2, 1))})
                     print("euclidean difference: ", {-(pre_corrupt.unsqueeze(2) -
                        post_corrupt.unsqueeze(1)).pow(2).sum(dim=-1)})
+
+                    plt.imsave(f'imgs/{idx}_pre_corrupt',pre_corrupt.type(dtype=torch.int).permute(1, 2, 0).cpu().numpy()  )
+                    plt.imsave(f'imgs/{idx}_post_corrupt',post_corrupt.type(dtype=torch.int).permute(1, 2, 0).cpu().numpy()  )
+                    
 
 
 
