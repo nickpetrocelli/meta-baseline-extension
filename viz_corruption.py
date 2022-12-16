@@ -72,8 +72,8 @@ def main(config, args):
                     post_enc = encoder(post_corrupt)
                     assert post_corrupt.dim() == 2, f'{post_corrupt.dim()}'
 
-                    plt.imsave(f'{idx}_pre_corrupt',pre_corrupt.permute(1, 2, 0)  )
-                    plt.imsave(f'{idx}_post_corrupt',post_corrupt.permute(1, 2, 0)  )
+                    plt.imsave(f'imgs/{idx}_pre_corrupt',pre_corrupt.permute(1, 2, 0)  )
+                    plt.imsave(f'imgs/{idx}_post_corrupt',post_corrupt.permute(1, 2, 0)  )
                     print("cosine difference: ", {torch.mm(F.normalize(pre_corrupt, dim=-1),
                               F.normalize(post_corrupt, dim=-1).t())})
                     print("euclidean difference: ", {-(pre_corrupt.unsqueeze(1) -
