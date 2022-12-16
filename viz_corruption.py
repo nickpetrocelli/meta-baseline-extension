@@ -92,7 +92,7 @@ def main(config, args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='./configs/test_few_shot_mini_20shot_cos.yaml')
+    parser.add_argument('--config', default='./configs/test/test_few_shot_mini_20shot_cos.yaml')
     parser.add_argument('--shot', type=int, default=20)
     parser.add_argument('--gpu', default='0')
     parser.add_argument('--epsilon', type=float, default=0.2)
