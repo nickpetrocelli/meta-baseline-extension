@@ -48,7 +48,7 @@ def main(config, args):
                 data.cuda(), n_way, n_shot, n_query,
                 ep_per_batch=ep_per_batch)
             
-    
+        ep_frac = math.floor(args.epsilon * n_shot)
         assert ep_frac != 0
 
         orig_size = x_shot.size()
