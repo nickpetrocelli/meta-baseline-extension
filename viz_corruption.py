@@ -27,10 +27,7 @@ def main(config, args):
     dataset = datasets.make(config['dataset'], **config['dataset_args'])
     utils.log('dataset: {} (x{}), {}'.format(
             dataset[0][0].shape, len(dataset), dataset.n_classes))
-    if not args.sauc:
-        n_way = 5
-    else:
-        n_way = 2
+    n_way = 5
     n_shot, n_query = args.shot, 1
     n_batch = 200
     ep_per_batch = 4
