@@ -63,10 +63,11 @@ def main(config, args):
                     corruption_tensor = torch.normal(mean=0, 
                         std=torch.full(size=x_shot[episode][way][idx].size(), fill_value=args.std, device=device))
                     pre_corrupt = x_shot[episode][way][idx]
-                    pre_enc = encoder(torch.tensor([pre_corrupt]))
+                    # add dummy batch dim
+                    pre_enc = encoder(pre_corrupt[None, :])
                    
                     post_corrupt = x_shot[episode][way][idx] + corruption_tensor
-                    post_enc = encoder(torch.tensor([post_corrupt]))
+                    post_enc = encoder(post_corrupt[None, :])
                     assert post_corrupt.dim() == 2, f'{post_corrupt.dim()}'
 
                     plt.imsave(f'imgs/{idx}_pre_corrupt',pre_corrupt.permute(1, 2, 0)  )
