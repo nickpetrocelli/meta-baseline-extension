@@ -63,19 +63,20 @@ def main(config, args):
                     corruption_tensor = torch.normal(mean=0, 
                         std=torch.full(size=x_shot[episode][way][idx].size(), fill_value=args.std, device=device))
                     pre_corrupt = x_shot[episode][way][idx]
+                    print(pre_corrupt.size())
                     # add dummy batch dim
                     pre_enc = encoder(pre_corrupt[None, :])
                    
                     post_corrupt = x_shot[episode][way][idx] + corruption_tensor
                     post_enc = encoder(post_corrupt[None, :])
 
-                    print("cosine difference: ", {torch.bmm(F.normalize(pre_corrupt, dim=-1),
-                               F.normalize(post_corrupt, dim=-1).permute(0, 2, 1))})
-                    print("euclidean difference: ", {-(pre_corrupt.unsqueeze(2) -
-                       post_corrupt.unsqueeze(1)).pow(2).sum(dim=-1)})
+                    #print("cosine difference: ", {torch.bmm(F.normalize(pre_corrupt, dim=-1),
+                               #F.normalize(post_corrupt, dim=-1).permute(0, 2, 1))})
+                    #print("euclidean difference: ", {-(pre_corrupt.unsqueeze(2) -
+                       #post_corrupt.unsqueeze(1)).pow(2).sum(dim=-1)})
                     #.permute(1, 2, 0)
-                    plt.imsave(f'imgs/{idx}_pre_corrupt.png',pre_corrupt.type(dtype=torch.uint8).cpu().numpy()  )
-                    plt.imsave(f'imgs/{idx}_post_corrupt.png',post_corrupt.type(dtype=torch.uint8).cpu().numpy()  )
+                    plt.imsave(f'imgs/{idx}_pre_corrupt.jpeg',pre_corrupt.type(dtype=torch.uint8).permute(1, 2, 0).cpu().numpy()  )
+                    plt.imsave(f'imgs/{idx}_post_corrupt.jpeg',post_corrupt.type(dtype=torch.uint8).permute(1, 2, 0).cpu().numpy()  )
                     
 
 
