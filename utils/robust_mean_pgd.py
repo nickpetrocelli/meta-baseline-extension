@@ -6,7 +6,7 @@ import scipy.sparse.linalg as sla
 #   High-Dimensional Robust Mean Estimation via Gradient Descent.
 #   In Proceedings of the 37th International Conference on Machine Learning (ICML), 2020.
 
-# Translated from Matlab to Python
+# Ported from Matlab to Python by Nicholas Petrocelli.
 
 # Input: X (N x d, N d-dimensinoal samples) and eps (fraction of corruption).
 # Output: a hypothesis vector mu (a column vector).
@@ -39,7 +39,7 @@ def robust_mean_pgd(X, eps):
 
         # Compute the gradient of spectral norm (assuming unique top eigenvalue)
         # nabla_f_w = (X * u) .* (X * u) - (w' * X * u) * X * u;
-        Xu = X @ u;
+        Xu = X @ u
         Xu = np.reshape(Xu, (np.shape(Xu)[0], 1))
         # print(np.shape(Xu))
         # print(np.shape(w.T))

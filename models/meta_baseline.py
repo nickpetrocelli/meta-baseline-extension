@@ -38,6 +38,11 @@ class MetaBaseline(nn.Module):
             x_shot = F.normalize(x_shot, dim=-1)
             x_query = F.normalize(x_query, dim=-1)
             metric = 'dot'
+        elif self.method == 'cos_pgd':
+            x_shot = utils.robust_proto_pgd(x_shot)
+            x_shot = F.normalize(x_shot, dim=-1)
+            x_query = F.normalize(x_query, dim=-1)
+            metric = 'dot'
         elif self.method == 'sqr':
             #print(f'before mean shape: {x_shot.size()}')
             x_shot = x_shot.mean(dim=-2)

@@ -61,8 +61,12 @@ def main(config, args):
         model = nn.DataParallel(model)
 
     if args.use_pgd:
-        assert model.method == 'sqr'
-        model.method = 'sqr_pgd'
+        if model.method == 'sqr':
+            model.method = 'sqr_pgd'
+        else if model.method == 'cos':
+            model.method = 'cos_pgd'
+        else:
+            raise ValueError("Unrecognized model method")
 
     model.eval()
     utils.log('num params: {}'.format(utils.compute_n_params(model)))
