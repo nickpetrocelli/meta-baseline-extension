@@ -34,4 +34,6 @@ Citation for that paper:
 
 To utilize this when evaluating, run `test_few_shot.py` with the option `--use-pgd`.
 
+The code used for the robust mean estimation algorithm is a port of the code found in https://github.com/chycharlie/robust-bn-faster. Credit for the original implementation goes to Yu Cheng for that repository.
+
 All of our test results can be found in `test_results`.
